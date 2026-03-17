@@ -1,0 +1,101 @@
+/**
+ * layout.css
+ * Ensures sidebar and main content scroll independently.
+ * This file EXTENDS dashboard.css — it does not override it.
+ *
+ * Key rules:
+ *  - body is the full viewport; overflow hidden so only child areas scroll
+ *  - .sidebar scrolls vertically if its nav items overflow
+ *  - .main-content scrolls its own content below the topbar
+ */
+
+/* Full-viewport body — html is left untouched to avoid breaking modals */
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── Sidebar independent scroll ────────────────────────────────────────────── */
+.sidebar {
+    /* Subtract topbar so sidebar sits flush under the header */
+    height: calc(100vh - var(--topbar-height, 64px));
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Smooth scrollbar appearance on webkit */
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300, #d1d5db) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--gray-300, #d1d5db);
+    border-radius: 999px;
+    transition: background-color 0.3s;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--gray-400, #9ca3af);
+}
+
+/* ── Main content independent scroll ───────────────────────────────────────── */
+.main-content {
+    height: calc(100vh - var(--topbar-height, 64px));
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: var(--gray-100, #f3f4f6);
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background-color: var(--gray-300, #d1d5db);
+    border-radius: 999px;
+    transition: background-color 0.3s;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary, #6366f1);
+}
+
+/* ── Sidebar placeholder (invisible before sidebar loads) ───────────────────── */
+#sidebar-container {
+    /* Matches the sidebar grid column so the page doesn't shift on load */
+    grid-row: 1 / -1;
+    display: contents; /* The injected <aside> takes over the grid slot */
+}
+
+/* ── Page transition animations ───────────────────────────────────────────── */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-container > * {
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.content-container > *:nth-child(1) { animation-delay: 0.05s; }
+.content-container > *:nth-child(2) { animation-delay: 0.1s; }
+.content-container > *:nth-child(3) { animation-delay: 0.15s; }
+.content-container > *:nth-child(4) { animation-delay: 0.2s; }
+.content-container > *:nth-child(5) { animation-delay: 0.25s; }

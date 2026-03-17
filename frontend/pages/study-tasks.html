@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tasks - Mathematics Masters</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tasks-header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tasks-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .task-stat-card.pending {
+            border-left-color: #f59e0b;
+        }
+
+        .task-stat-card.completed {
+            border-left-color: #43e97b;
+        }
+
+        .task-stat-card.overdue {
+            border-left-color: #f5576c;
+        }
+
+        .task-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+        }
+
+        .task-stat-card.pending .task-stat-value {
+            color: #f59e0b;
+        }
+
+        .task-stat-card.completed .task-stat-value {
+            color: #43e97b;
+        }
+
+        .task-stat-card.overdue .task-stat-value {
+            color: #f5576c;
+        }
+
+        .task-stat-label {
+            font-size: 0.8rem;
+            color: #8b8b8b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tasks-filters {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tab:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(4px);
+        }
+
+        .task-item.completed {
+            opacity: 0.7;
+            border-left-color: #43e97b;
+        }
+
+        .task-item.high-priority {
+            border-left-color: #f5576c;
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #d0d0d0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .task-item:hover .task-checkbox {
+            border-color: #667eea;
+        }
+
+        .task-item.completed .task-checkbox {
+            background: #43e97b;
+            border-color: #43e97b;
+            color: white;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            color: #b0b0b0;
+        }
+
+        .task-description {
+            font-size: 0.9rem;
+            color: #8b8b8b;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: #8b8b8b;
+        }
+
+        .task-meta-item i {
+            color: #667eea;
+            font-size: 0.9rem;
+            width: 16px;
+        }
+
+        .task-assignee {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .assignee-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .priority-high {
+            background: rgba(245, 87, 108, 0.1);
+            color: #f5576c;
+        }
+
+        .priority-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .priority-low {
+            background: rgba(67, 233, 123, 0.1);
+            color: #43e97b;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .task-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+
+        .task-action-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .empty-tasks {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #d0d0d0;
+            margin-bottom: 1rem;
+        }
+
+        .empty-tasks h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-tasks p {
+            color: #b0b0b0;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .tasks-header-section {
+                flex-direction: column;
+            }
+
+            .task-item {
+                flex-direction: column;
+            }
+
+            .task-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .tasks-filters {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- Left Sidebar -->
+        <aside class="room-sidebar nav-panel">
+            <div class="nav-header">
+                <div class="room-title-group">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3>Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-room.html" class="tool-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="study-chat.html" class="tool-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item active">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span onclick="location.href='study-room.html'" style="cursor: pointer;">Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Study Tasks</span>
+                        </div>
+                        <h2>Task Management</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> New Task
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <!-- Task Stats -->
+                <div class="tasks-stats">
+                    <div class="task-stat-card">
+                        <div class="task-stat-value">5</div>
+                        <div class="task-stat-label">Total Tasks</div>
+                    </div>
+                    <div class="task-stat-card pending">
+                        <div class="task-stat-value">3</div>
+                        <div class="task-stat-label">In Progress</div>
+                    </div>
+                    <div class="task-stat-card completed">
+                        <div class="task-stat-value">12</div>
+                        <div class="task-stat-label">Completed</div>
+                    </div>
+                    <div class="task-stat-card overdue">
+                        <div class="task-stat-value">0</div>
+                        <div class="task-stat-label">Overdue</div>
+                    </div>
+                </div>
+
+                <!-- Task Filters -->
+                <div class="tasks-filters">
+                    <button class="filter-tab active">All Tasks</button>
+                    <button class="filter-tab">My Tasks</button>
+                    <button class="filter-tab">Assigned to Me</button>
+                    <button class="filter-tab">Due This Week</button>
+                    <button class="filter-tab">Completed</button>
+                </div>
+
+                <!-- Tasks List -->
+                <div class="tasks-list">
+                    <!-- Task 1 -->
+                    <div class="task-item high-priority">
+                        <div class="task-checkbox" onclick="this.parentElement.parentElement.classList.toggle('completed')">
+                            <i class="fas fa-check" style="display: none;"></i>
+                        </div>
+                        <div class="task-content">
+                            <h3 class="task-title">Complete Chapter 5 Practice Problems</h3>
+                            <p class="task-description">Solve problems 1-50 from the textbook. Focus on applications of the chain rule.</p>
+                            <div class="task-meta">
+                                <span class="priority-badge priority-high">
+                                    <i class="fas fa-flag"></i> HIGH
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> Due Oct 15
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-list-check"></i> 24/50 problems done
+                                </span>
+                                <div class="task-assignee">
+                                    <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="assignee-avatar" alt="">
+                                    <span style="font-size: 0.8rem; font-weight: 500;">You</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="task-action-btn" title="More">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2 -->
+                    <div class="task-item">
+                        <div class="task-checkbox">
+                            <i class="fas fa-check" style="display: none;"></i>
+                        </div>
+                        <div class="task-content">
+                            <h3 class="task-title">Review Integration by Parts Method</h3>
+                            <p class="task-description">Study the notes from Sarah's collaboration document. Prepare for quiz on Friday.</p>
+                            <div class="task-meta">
+                                <span class="priority-badge priority-medium">
+                                    <i class="fas fa-flag"></i> MEDIUM
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> Due Oct 18
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-clock"></i> 2 hours estimated
+                                </span>
+                                <div class="task-assignee">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="assignee-avatar" alt="">
+                                    <span style="font-size: 0.8rem; font-weight: 500;">Sarah Lee</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="task-action-btn" title="More">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task 3 -->
+                    <div class="task-item">
+                        <div class="task-checkbox">
+                            <i class="fas fa-check" style="display: none;"></i>
+                        </div>
+                        <div class="task-content">
+                            <h3 class="task-title">Submit Mid-Term Exam Answers</h3>
+                            <p class="task-description">Complete and submit your solutions for the comprehensive mid-term exam covering chapters 1-4.</p>
+                            <div class="task-meta">
+                                <span class="priority-badge priority-high">
+                                    <i class="fas fa-flag"></i> HIGH
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> Due Oct 20
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-clock"></i> 3 hours estimated
+                                </span>
+                                <div class="task-assignee">
+                                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="assignee-avatar" alt="">
+                                    <span style="font-size: 0.8rem; font-weight: 500;">Alex Carter</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="task-action-btn" title="More">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task 4 -->
+                    <div class="task-item">
+                        <div class="task-checkbox">
+                            <i class="fas fa-check" style="display: none;"></i>
+                        </div>
+                        <div class="task-content">
+                            <h3 class="task-title">Peer Review - John's Practice Solutions</h3>
+                            <p class="task-description">Review and provide constructive feedback on John's solution set. Check for common errors.</p>
+                            <div class="task-meta">
+                                <span class="priority-badge priority-low">
+                                    <i class="fas fa-flag"></i> LOW
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> Due Oct 22
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-clock"></i> 1.5 hours estimated
+                                </span>
+                                <div class="task-assignee">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="assignee-avatar" alt="">
+                                    <span style="font-size: 0.8rem; font-weight: 500;">John Doe</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="task-action-btn" title="More">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task 5 -->
+                    <div class="task-item">
+                        <div class="task-checkbox">
+                            <i class="fas fa-check" style="display: none;"></i>
+                        </div>
+                        <div class="task-content">
+                            <h3 class="task-title">Research Project on Real-World Applications</h3>
+                            <p class="task-description">Find and document 3 real-world applications of calculus in engineering or physics field.</p>
+                            <div class="task-meta">
+                                <span class="priority-badge priority-medium">
+                                    <i class="fas fa-flag"></i> MEDIUM
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-calendar"></i> Due Oct 25
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="fas fa-users"></i> Team: 3 people
+                                </span>
+                                <div class="task-assignee">
+                                    <img src="https://ui-avatars.com/api/?name=Group&background=764ba2&color=fff" class="assignee-avatar" alt="">
+                                    <span style="font-size: 0.8rem; font-weight: 500;">Group Task</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="task-action-btn" title="More">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Members Panel -->
+        <aside class="room-sidebar members-panel" style="display: none;">
+        </aside>
+    </div>
+
+    <script>
+        // Checkbox functionality
+        document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                const taskItem = this.closest('.task-item');
+                taskItem.classList.toggle('completed');
+                const icon = this.querySelector('i');
+                if (taskItem.classList.contains('completed')) {
+                    icon.style.display = 'block';
+                } else {
+                    icon.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

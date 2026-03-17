@@ -1,0 +1,423 @@
+/* ============================================
+   STUDY ROOM INTERFACE - PREMIUM STYLES
+   Discord/Slack inspired collaborative UI
+   ============================================ */
+
+:root {
+    /* Room Specific Colors */
+    --room-sidebar-bg: #1e1f22;
+    --room-nav-bg: #2b2d31;
+    --room-main-bg: #313338;
+    --room-members-bg: #2b2d31;
+    
+    --chat-bubble-self: var(--primary);
+    --chat-bubble-other: #383a40;
+    
+    --status-online: #23a55a;
+    --status-idle: #f0b232;
+    --status-dnd: #f23f43;
+    --status-offline: #80848e;
+}
+
+/* === LAYOUT STRUCTURE === */
+.study-room-wrapper {
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--room-main-bg);
+    overflow: hidden;
+    font-family: var(--font-secondary);
+    color: white;
+}
+
+/* === SIDEBARS COMMON === */
+.room-sidebar {
+    background-color: var(--room-nav-bg);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* === LEFT SIDEBAR: NAVIGATION === */
+.nav-panel {
+    width: 240px;
+}
+
+.nav-header {
+    height: 60px;
+    padding: 0 var(--space-md);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.room-title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    width: 100%;
+}
+
+.room-title-group h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.tool-list {
+    flex: 1;
+    padding: var(--space-md) var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: var(--transition-fast);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tool-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.tool-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--gray-100);
+}
+
+.tool-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* === MAIN WORKSPACE === */
+.main-workspace {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--room-main-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.workspace-header {
+    height: 60px;
+    padding: 0 var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--room-main-bg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+    z-index: 10;
+}
+
+.header-tool-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.header-tool-info i {
+    color: var(--gray-400);
+}
+
+.header-tool-info h4 {
+    margin-bottom: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--gray-400);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition-fast);
+}
+
+.action-btn:hover {
+    color: white;
+}
+
+/* === CHAT INTERFACE === */
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.message-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-xl) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.message-item {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.user-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+.timestamp {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+}
+
+.message-bubble {
+    background-color: var(--chat-bubble-other);
+    padding: 10px 14px;
+    border-radius: 0 12px 12px 12px;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    max-width: 600px;
+}
+
+.message-item.self {
+    flex-direction: row-reverse;
+}
+
+.message-item.self .message-bubble {
+    background-color: var(--chat-bubble-self);
+    border-radius: 12px 0 12px 12px;
+}
+
+.message-item.self .message-meta {
+    flex-direction: row-reverse;
+}
+
+/* --- Input Bar --- */
+.chat-input-wrapper {
+    padding: 0 var(--space-lg) var(--space-lg);
+    background-color: var(--room-main-bg);
+}
+
+.chat-input-bar {
+    background-color: #383a40;
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.chat-input-bar input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    padding: 8px 0;
+}
+
+.chat-input-bar input:focus {
+    outline: none;
+}
+
+/* === RIGHT SIDEBAR: MEMBERS === */
+.members-panel {
+    background-color: var(--room-members-bg);
+}
+
+.members-header {
+    padding: var(--space-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.session-card {
+    background: linear-gradient(135deg, var(--primary), #7c3aed);
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.session-card h5 {
+    color: white;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.member-list-section {
+    padding: var(--space-lg);
+    overflow-y: auto;
+}
+
+.member-list-section h6 {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+    margin-bottom: var(--space-md);
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.member-card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+}
+
+.member-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 3px solid var(--room-members-bg);
+}
+
+.status-online { background-color: var(--status-online); }
+.status-offline { background-color: var(--status-offline); }
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-200);
+}
+
+.member-role {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+}
+
+/* === SHARED FILES VIEW === */
+.files-view {
+    flex: 1;
+    padding: var(--space-xl);
+    overflow-y: auto;
+}
+
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-lg);
+}
+
+.file-card {
+    background-color: var(--room-nav-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.file-card:hover {
+    border-color: var(--primary);
+    background-color: rgba(99, 102, 241, 0.05);
+}
+
+.file-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+}
+
+/* === RESPONSIVE RULES === */
+@media (max-width: 1200px) {
+    .study-room-wrapper {
+        grid-template-columns: 240px 1fr;
+    }
+    .members-panel {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .study-room-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .nav-panel {
+        position: fixed;
+        left: -240px;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: var(--transition);
+    }
+    .nav-panel.active {
+        left: 0;
+    }
+}

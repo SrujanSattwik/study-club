@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/materials.css">
+    <link rel="stylesheet" href="../assets/css/get-started.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Get Started - StudyClub</title>
+    <link rel="stylesheet" href="src/css/dashboard.css">
+    <link rel="stylesheet" href="src/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Shared sidebar loaded by loadSidebar.js -->
+        <div id="sidebar-container"></div>
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <a href="login.html" class="btn btn-primary btn-sm login-btn">Login</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Personalized Welcome -->
+            <section class="search-section">
+                <div class="container">
+                    <div id="welcome-message" class="search-content">
+                        <h2 class="page-title">Loading...</h2>
+                        <p class="page-subtitle">Please wait</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Onboarding Steps -->
+            <section class="onboarding-section">
+                <div class="container">
+                    <h2 class="section-title">Your Onboarding Journey</h2>
+                    <div id="onboarding-steps" class="onboarding-steps-container">
+                        <!-- Steps will be rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Cards -->
+            <section class="features-overview">
+                <div class="container">
+                    <h2 class="section-title">Available Tools</h2>
+                    <div id="tool-cards" class="features-grid">
+                        <!-- Tool cards will be rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start Guide -->
+            <section class="quick-start">
+                <div class="container">
+                    <h2 class="section-title">Quick Start Guide</h2>
+                    <div class="guide-steps">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h3>Choose Your Tools</h3>
+                            <p>Browse through our features and select the tools that match your learning style and
+                                goals.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h3>Set Up Your Profile</h3>
+                            <p>Create your account and customize your study preferences and schedule.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h3>Start Learning</h3>
+                            <p>Begin your learning journey with our comprehensive suite of study tools.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>StudyClub</span>
+                    </div>
+                    <p>Empowering students to achieve their academic goals through innovative learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StudyClub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+
+
+    <script src="../assets/js/api-config.js"></script>
+    <script src="../assets/js/auth-manager.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="js/user-manager.js"></script>
+    <script src="js/get-started.js"></script>
+    <script src="src/js/loadSidebar.js"></script>
+    <script src="src/js/layout.js"></script>
+</body>
+
+</html>

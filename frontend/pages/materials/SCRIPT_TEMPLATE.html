@@ -1,0 +1,68 @@
+<!-- Materials Page Script Template -->
+<!-- Copy this script block to all materials pages and change the material type -->
+
+<script src="../../assets/js/api-config.js"></script>
+<script src="../../assets/js/materials-loader.js"></script>
+<script src="../../assets/js/auth-manager.js"></script>
+<script src="../src/js/loadSidebar.js"></script>
+<script src="../src/js/layout.js"></script>
+<script>
+    // Upload modal functions
+    function openUploadModal() {
+        document.getElementById('uploadModal').classList.add('active');
+    }
+
+    function closeUploadModal() {
+        document.getElementById('uploadModal').classList.remove('active');
+    }
+
+    document.getElementById('uploadModal')?.addEventListener('click', (e) => {
+        if (e.target.id === 'uploadModal') closeUploadModal();
+    });
+
+    function switchUploadMode(mode) {
+        const fileSection = document.getElementById('fileUploadSection');
+        const linkSection = document.getElementById('linkUploadSection');
+        const fileModeBtn = document.getElementById('fileModeBtn');
+        const linkModeBtn = document.getElementById('linkModeBtn');
+        const fileInput = document.getElementById('fileInput');
+        const linkInput = document.getElementById('fileLink') || document.getElementById('videoLink') || document.getElementById('audioLink') || document.getElementById('imageLink');
+
+        if (mode === 'file') {
+            fileSection.style.display = 'block';
+            linkSection.style.display = 'none';
+            fileModeBtn.classList.add('active');
+            linkModeBtn.classList.remove('active');
+            if (fileInput) fileInput.required = true;
+            if (linkInput) linkInput.required = false;
+        } else {
+            fileSection.style.display = 'none';
+            linkSection.style.display = 'block';
+            fileModeBtn.classList.remove('active');
+            linkModeBtn.classList.add('active');
+            if (fileInput) fileInput.required = false;
+            if (linkInput) linkInput.required = true;
+        }
+    }
+
+    document.getElementById('fileInput')?.addEventListener('change', (e) => {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            document.getElementById('fileName').textContent = `Selected: ${fileName}`;
+        }
+    });
+
+    document.getElementById('thumbnailInput')?.addEventListener('change', (e) => {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            document.getElementById('thumbnailName').textContent = `Selected: ${fileName}`;
+        }
+    });
+
+    // Initialize materials page
+    // CHANGE THIS LINE FOR EACH PAGE:
+    // textbook, video, audio, notes, practice, infographic
+    document.addEventListener('DOMContentLoaded', () => {
+        initMaterialsPage('MATERIAL_TYPE_HERE');
+    });
+</script>

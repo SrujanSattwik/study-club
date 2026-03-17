@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Chat - Mathematics Masters</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .chat-main-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 1rem;
+        }
+
+        .chat-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message-group {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .message-group.self {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid #e5e5e5;
+        }
+
+        .message-group.self .message-avatar {
+            order: 2;
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 60%;
+        }
+
+        .message-group.self .message-content {
+            align-items: flex-end;
+        }
+
+        .message-header {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .message-author {
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .message-time {
+            color: #b0b0b0;
+        }
+
+        .message-bubble {
+            padding: 0.875rem 1.25rem;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+
+        .message-group:not(.self) .message-bubble {
+            background: #f5f6fa;
+            color: #1a1a1a;
+            border-left: 3px solid #667eea;
+        }
+
+        .message-group.self .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .chat-input-section {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            background: white;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+
+        .chat-input-field {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: none;
+            max-height: 100px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-field:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .chat-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .chat-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-participants {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .participant-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .participant-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .participant-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 0.75rem;
+            border: 2px solid #667eea;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .participant-role {
+            font-size: 0.75rem;
+            color: #b0b0b0;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .chat-container-split {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            height: calc(100vh - 140px);
+        }
+
+        @media (max-width: 1200px) {
+            .chat-container-split {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .message-content {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- Left Sidebar -->
+        <aside class="room-sidebar nav-panel">
+            <div class="nav-header">
+                <div class="room-title-group">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3>Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-room.html" class="tool-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="study-chat.html" class="tool-item active">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span onclick="location.href='study-room.html'" style="cursor: pointer;">Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Study Chat</span>
+                        </div>
+                        <h2>Study Chat Discussion</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-ghost" title="Pin Important Messages">
+                        <i class="fas fa-thumbtack"></i>
+                    </button>
+                    <button class="btn btn-ghost" title="Search Messages">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="settings.html"><button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-cog"></i> Settings
+                    </button></a>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <!-- Chat Participants -->
+                <div>
+                    <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-users" style="color: #667eea;"></i> Active Participants</h3>
+                    <div class="chat-participants">
+                        <div class="participant-card">
+                            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="participant-avatar" alt="">
+                            <div class="participant-name">Alex Carter</div>
+                            <div class="participant-role">Admin</div>
+                        </div>
+                        <div class="participant-card">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="participant-avatar" alt="">
+                            <div class="participant-name">Sarah Lee</div>
+                            <div class="participant-role">Moderator</div>
+                        </div>
+                        <div class="participant-card">
+                            <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="participant-avatar" alt="">
+                            <div class="participant-name">You</div>
+                            <div class="participant-role">Student</div>
+                        </div>
+                        <div class="participant-card">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="participant-avatar" alt="">
+                            <div class="participant-name">John Doe</div>
+                            <div class="participant-role">Student</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Box -->
+                <div class="chat-box">
+                    <div class="chat-messages">
+                        <div class="message-group">
+                            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="message-avatar" alt="">
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">Alex Carter</span>
+                                    <span class="message-time">2:30 PM</span>
+                                </div>
+                                <div class="message-bubble">
+                                    Hey everyone! Ready for today's Calculus review session? 📚
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-group">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="message-avatar" alt="">
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">Sarah Lee</span>
+                                    <span class="message-time">2:32 PM</span>
+                                </div>
+                                <div class="message-bubble">
+                                    Absolutely! I've prepared some notes on derivatives and integrals. Let me share them with the group.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-group self">
+                            <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="message-avatar" alt="">
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">You</span>
+                                    <span class="message-time">2:35 PM</span>
+                                </div>
+                                <div class="message-bubble">
+                                    Thanks Sarah! Looking forward to going through the practice problems together.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-group">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="message-avatar" alt="">
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">John Doe</span>
+                                    <span class="message-time">2:38 PM</span>
+                                </div>
+                                <div class="message-bubble">
+                                    I have some tricky questions from last week's assignment. Can we go through them? 🤔
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-group">
+                            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="message-avatar" alt="">
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">Alex Carter</span>
+                                    <span class="message-time">2:40 PM</span>
+                                </div>
+                                <div class="message-bubble">
+                                    Of course! That's exactly what we're here for. Let's make this an interactive learning session.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-section">
+                        <form class="chat-input-wrapper" id="chatForm">
+                            <input type="text" class="chat-input-field" id="chatInput" placeholder="Share your thoughts or ask a question...">
+                            <button type="submit" class="chat-action-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Members Sidebar -->
+        <aside class="room-sidebar members-panel" style="display: none;">
+        </aside>
+    </div>
+
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            if (input.value.trim()) {
+                console.log('Message sent:', input.value);
+                input.value = '';
+                input.focus();
+            }
+        });
+    </script>
+</body>
+
+</html>

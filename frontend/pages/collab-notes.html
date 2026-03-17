@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Notes - Mathematics Masters</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .notes-header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .notes-search-bar {
+            display: flex;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .notes-search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .notes-search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .notes-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .note-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .note-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #b0b0b0;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .note-menu-btn:hover {
+            color: #667eea;
+        }
+
+        .note-content {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            max-height: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+
+        .note-date {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .note-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .note-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .note-stat i {
+            color: #667eea;
+            font-size: 0.85rem;
+        }
+
+        .note-contributors {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contributor-avatars {
+            display: flex;
+            margin-right: 0.5rem;
+        }
+
+        .contributor-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-left: -8px;
+            transition: all 0.3s ease;
+        }
+
+        .contributor-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .contributor-count {
+            font-size: 0.8rem;
+            color: #b0b0b0;
+        }
+
+        .note-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .note-action-btn {
+            padding: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            color: #4a4a4a;
+        }
+
+        .note-action-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .note-action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .note-action-btn.primary:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .note-color-badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .color-red { background: #f5576c; }
+        .color-blue { background: #667eea; }
+        .color-green { background: #43e97b; }
+        .color-purple { background: #764ba2; }
+        .color-orange { background: #f59e0b; }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 3.5rem;
+            color: #d0d0d0;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+        }
+
+        .notes-tabs {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+            flex-wrap: wrap;
+        }
+
+        .notes-tab {
+            padding: 1rem 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #b0b0b0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notes-tab:hover {
+            color: #667eea;
+        }
+
+        .notes-tab.active {
+            color: #667eea;
+        }
+
+        .notes-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        @media (max-width: 1200px) {
+            .notes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .note-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .notes-header-section {
+                flex-direction: column;
+            }
+
+            .notes-search-bar {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- Left Sidebar -->
+        <aside class="room-sidebar nav-panel">
+            <div class="nav-header">
+                <div class="room-title-group">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3>Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-room.html" class="tool-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="study-chat.html" class="tool-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item active">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span onclick="location.href='study-room.html'" style="cursor: pointer;">Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Collaborative Notes</span>
+                        </div>
+                        <h2>Shared Study Notes</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> New Note
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <!-- Header Section -->
+                <div class="notes-header-section">
+                    <div class="notes-search-bar">
+                        <input type="text" class="notes-search-input" placeholder="Search notes...">
+                    </div>
+                    <div class="notes-actions">
+                        <button class="btn btn-ghost">
+                            <i class="fas fa-list"></i> List
+                        </button>
+                        <button class="btn btn-ghost">
+                            <i class="fas fa-grip"></i> Grid
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="notes-tabs">
+                    <button class="notes-tab active"><i class="fas fa-star"></i> All Notes (8)</button>
+                    <button class="notes-tab"><i class="fas fa-clock"></i> Recently Updated</button>
+                    <button class="notes-tab"><i class="fas fa-users"></i> My Contributions</button>
+                    <button class="notes-tab"><i class="fas fa-archive"></i> Archived</button>
+                </div>
+
+                <!-- Notes Grid -->
+                <div class="notes-grid">
+                    <!-- Note Card 1 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-blue"></span>Calculus - Derivatives
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Definition and rules of differentiation. Power rule, product rule, chain rule with examples. Applications to real-world problems and optimization.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">3 contributors</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 2 hours ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 24</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 8</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Note Card 2 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-green"></span>Integration Techniques
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Methods of integration: substitution, by parts, partial fractions. Definite and indefinite integrals with practice problems.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">2 contributors</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 1 day ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 18</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 5</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Note Card 3 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-purple"></span>Exam Review - Ch 1-3
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Summary of key concepts from chapters 1-3. Important formulas, theorems, and practice questions for mid-term exam.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">2 contributors</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 3 days ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 42</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 12</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Note Card 4 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-orange"></span>Study Tips & Resources
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Effective study strategies, recommended textbooks, online resources, and tools for learning calculus efficiently.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">1 contributor</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 1 week ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 56</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 15</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Note Card 5 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-red"></span>Limits & Continuity
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Understanding limits, continuity concepts, and L'Hôpital's rule. Connection to derivatives and real-world applications.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">2 contributors</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 4 days ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 31</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 9</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Note Card 6 -->
+                    <div class="note-card">
+                        <div class="note-header">
+                            <h3 class="note-title">
+                                <span class="note-color-badge color-blue"></span>Series & Sequences
+                            </h3>
+                            <button class="note-menu-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="note-content">
+                            Arithmetic and geometric sequences. Power series, Taylor series, and convergence tests for infinite series.
+                        </div>
+                        <div class="note-contributors">
+                            <div class="contributor-avatars">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="contributor-avatar" alt="">
+                                <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="contributor-avatar" alt="">
+                            </div>
+                            <span class="contributor-count">3 contributors</span>
+                        </div>
+                        <div class="note-meta">
+                            <span class="note-date"><i class="fas fa-calendar"></i> Updated 5 hours ago</span>
+                            <div class="note-stats">
+                                <span class="note-stat"><i class="fas fa-eye"></i> 28</span>
+                                <span class="note-stat"><i class="fas fa-comment"></i> 7</span>
+                            </div>
+                        </div>
+                        <div class="note-actions">
+                            <button class="note-action-btn primary"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="note-action-btn"><i class="fas fa-share"></i> Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Members Panel -->
+        <aside class="room-sidebar members-panel" style="display: none;">
+        </aside>
+    </div>
+</body>
+
+</html>

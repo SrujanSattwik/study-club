@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Room - Professional Collaboration Hub</title>
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Room Specific Styles -->
+    <link rel="stylesheet" href="../assets/css/study-room.css">
+    <!-- Professional Room Styles -->
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <!-- UI Enhancements -->
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- 1️⃣ Left Sidebar: Navigation Panel -->
+        <aside class="room-sidebar nav-panel" id="navPanel">
+            <div class="nav-header">
+                <div class="room-title-group" id="roomHeaderInfo">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3 id="roomName">Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-chat.html" class="tool-item active" data-view="chat">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item" data-view="files">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item" data-view="notes">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item" data-view="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item" data-view="session">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+                <a href="resources.html" class="tool-item" data-view="resources">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Resources</span>
+                    <span class="tool-badge">24</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2️⃣ Middle Workspace: Dashboard View -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span>Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Dashboard</span>
+                        </div>
+                        <h2>Welcome Back! 👋</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-ghost">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share Room
+                    </button>
+                    <button class="btn btn-primary btn-sm" id="inviteBtn">
+                        <i class="fas fa-user-plus"></i> Invite
+                    </button>
+                    <button class="action-btn" id="leaveBtn" title="Leave Room"
+                        onclick="location.href='../pages/community.html'">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-container">
+                <!-- Quick Stats Section -->
+                <section class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-icon study-chat">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Study Chat</h4>
+                            <p>3 active conversations</p>
+                            <a href="study-chat.html" class="stat-link">View Chat <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon shared-files">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Shared Files</h4>
+                            <p>12 files uploaded</p>
+                            <a href="shared-files.html" class="stat-link">Browse Files <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon collab-notes">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Collab Notes</h4>
+                            <p>8 shared notebooks</p>
+                            <a href="collab-notes.html" class="stat-link">View Notes <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon study-tasks">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Study Tasks</h4>
+                            <p>5 tasks pending</p>
+                            <a href="study-tasks.html" class="stat-link">View Tasks <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon study-session">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Study Session</h4>
+                            <p>2 sessions this week</p>
+                            <a href="study-session.html" class="stat-link">Join Session <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon resources">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Resources</h4>
+                            <p>24 learning materials</p>
+                            <a href="resources.html" class="stat-link">Explore <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Content Section -->
+                <section class="featured-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-star"></i> Featured</h3>
+                        <a href="#" class="see-all">See all →</a>
+                    </div>
+
+                    <div class="featured-grid">
+                        <div class="featured-card">
+                            <div class="featured-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <span class="featured-badge">Active</span>
+                            </div>
+                            <h4>Calculus Chapter Review</h4>
+                            <p>Join our weekly review session on advanced calculus concepts</p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-users"></i> 12 members</span>
+                                <span><i class="fas fa-clock"></i> Today 3PM</span>
+                            </div>
+                        </div>
+
+                        <div class="featured-card">
+                            <div class="featured-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <span class="featured-badge">New</span>
+                            </div>
+                            <h4>Practice Problem Set</h4>
+                            <p>Comprehensive problem set with detailed solutions</p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-file"></i> PDF</span>
+                                <span><i class="fas fa-download"></i> 45 downloads</span>
+                            </div>
+                        </div>
+
+                        <div class="featured-card">
+                            <div class="featured-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <span class="featured-badge">Popular</span>
+                            </div>
+                            <h4>Study Tips & Tricks</h4>
+                            <p>Learn effective study techniques from top performers</p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-comment"></i> 34 discussions</span>
+                                <span><i class="fas fa-heart"></i> 89 liked</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity Section -->
+                <section class="activity-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    </div>
+
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" alt="Avatar"
+                                class="activity-avatar">
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Alex Carter</strong> shared a file
+                                    <span class="activity-resource">Calculus_Notes_Ch5.pdf</span>
+                                </div>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" alt="Avatar"
+                                class="activity-avatar">
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Sarah Lee</strong> started a new note
+                                    <span class="activity-resource">Integration Techniques</span>
+                                </div>
+                                <span class="activity-time">5 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=10b981&color=fff" alt="Avatar"
+                                class="activity-avatar">
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>John Doe</strong> completed a task
+                                    <span class="activity-resource">Homework Set 3</span>
+                                </div>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <img src="https://ui-avatars.com/api/?name=Emma+Wilson&background=f59e0b&color=fff" alt="Avatar"
+                                class="activity-avatar">
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Emma Wilson</strong> joined the study session
+                                </div>
+                                <span class="activity-time">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 3️⃣ Right Sidebar: Members & Insights -->
+        <aside class="room-sidebar members-panel">
+            <div class="members-header">
+                <div class="session-card premium">
+                    <div class="session-content">
+                        <h5>Active Session</h5>
+                        <p>Calculus Review</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-play"></i> Join
+                    </button>
+                </div>
+
+                <div class="room-meta-info">
+                    <p style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">
+                        Category <i class="fas fa-info-circle"></i>
+                    </p>
+                    <span class="gradient-text" style="font-weight: 600;">Advanced Mathematics</span>
+                </div>
+            </div>
+
+            <div class="member-list-section">
+                <div class="member-section-header">
+                    <h6><i class="fas fa-circle" style="color: #23a55a; font-size: 0.6rem;"></i> Online — 3</h6>
+                    <button class="btn btn-ghost btn-xs">View All</button>
+                </div>
+                
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Alex Carter</span>
+                        <span class="member-role">Admin</span>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Sarah Lee</span>
+                        <span class="member-role">Moderator</span>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">You</span>
+                        <span class="member-role">Student</span>
+                    </div>
+                </div>
+
+                <div class="member-section-header" style="margin-top: 1.5rem;">
+                    <h6><i class="fas fa-circle" style="color: #80848e; font-size: 0.6rem;"></i> Offline — 12</h6>
+                </div>
+                
+                <div class="member-card offline">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=9ca3af&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-offline"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">John Doe</span>
+                    </div>
+                </div>
+
+                <div class="member-card offline">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Emma+Wilson&background=f59e0b&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-offline"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Emma Wilson</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-stats">
+                <h6>Room Stats</h6>
+                <div class="stat-row">
+                    <span>Total Members</span>
+                    <strong>15</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Created</span>
+                    <strong>3 weeks ago</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Total Messages</span>
+                    <strong>482</strong>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/study-room.js"></script>
+</body>
+
+</html>

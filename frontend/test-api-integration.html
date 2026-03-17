@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integration Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.online {
+            background: #28a745;
+            color: white;
+        }
+        .status.offline {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 StudyHub API Integration Test</h1>
+    
+    <div class="test-section">
+        <h2>Server Status</h2>
+        <button onclick="testServerConnection()">Test Server Connection</button>
+        <div id="server-status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Materials API</h2>
+        <button onclick="testGetMaterials()">GET /api/materials</button>
+        <button onclick="testGetMaterialsFiltered()">GET /api/materials?type=textbook</button>
+        <div id="materials-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Authentication API</h2>
+        <button onclick="testSendOTP()">POST /auth/send-otp (test@example.com)</button>
+        <button onclick="testLogin()">POST /api/auth/login</button>
+        <div id="auth-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Dashboard API (Requires Auth)</h2>
+        <button onclick="testDashboard()">GET /api/dashboard</button>
+        <div id="dashboard-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Chat API (Requires Auth)</h2>
+        <button onclick="testChatSessions()">GET /api/chat/sessions</button>
+        <button onclick="testAskAI()">POST /api/ask</button>
+        <div id="chat-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Activity API (Requires Auth)</h2>
+        <button onclick="testRecentActivity()">GET /api/activity/recent</button>
+        <div id="activity-result"></div>
+    </div>
+
+    <script src="assets/js/api-config.js"></script>
+    <script>
+        const API_BASE = window.API_CONFIG ? API_CONFIG.BASE_URL : 'http://localhost:3001';
+
+        function displayResult(elementId, data, isError = false) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="result ${isError ? 'error' : 'success'}">${JSON.stringify(data, null, 2)}</div>`;
+        }
+
+        async function testServerConnection() {
+            const el = document.getElementById('server-status');
+            try {
+                const response = await fetch(`${API_BASE}/test`);
+                const data = await response.json();
+                el.innerHTML = `<span class="status online">ONLINE</span><div class="result success">${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                el.innerHTML = `<span class="status offline">OFFLINE</span><div class="result error">Error: ${error.message}\n\nMake sure backend is running:\ncd backend\nnode server.js</div>`;
+            }
+        }
+
+        async function testGetMaterials() {
+            try {
+                const response = await fetch(`${API_BASE}/api/materials`);
+                const data = await response.json();
+                displayResult('materials-result', {
+                    status: response.status,
+                    success: response.ok,
+                    count: data.materials?.length || 0,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('materials-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetMaterialsFiltered() {
+            try {
+                const response = await fetch(`${API_BASE}/api/materials?type=textbook`);
+                const data = await response.json();
+                displayResult('materials-result', {
+                    status: response.status,
+                    success: response.ok,
+                    filter: 'type=textbook',
+                    count: data.materials?.length || 0,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('materials-result', { error: error.message }, true);
+            }
+        }
+
+        async function testSendOTP() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/send-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'test@example.com' })
+                });
+                const data = await response.json();
+                displayResult('auth-result', {
+                    status: response.status,
+                    success: response.ok,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('auth-result', { error: error.message }, true);
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: 'test@example.com', 
+                        password: 'testpassword' 
+                    })
+                });
+                const data = await response.json();
+                displayResult('auth-result', {
+                    status: response.status,
+                    success: response.ok,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('auth-result', { error: error.message }, true);
+            }
+        }
+
+        async function testDashboard() {
+            const token = localStorage.getItem('studyhub_token');
+            if (!token) {
+                displayResult('dashboard-result', { error: 'Not logged in. Please login first.' }, true);
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE}/api/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                displayResult('dashboard-result', {
+                    status: response.status,
+                    success: response.ok,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('dashboard-result', { error: error.message }, true);
+            }
+        }
+
+        async function testChatSessions() {
+            const token = localStorage.getItem('studyhub_token');
+            if (!token) {
+                displayResult('chat-result', { error: 'Not logged in. Please login first.' }, true);
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/sessions`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                displayResult('chat-result', {
+                    status: response.status,
+                    success: response.ok,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('chat-result', { error: error.message }, true);
+            }
+        }
+
+        async function testAskAI() {
+            const token = localStorage.getItem('studyhub_token');
+            try {
+                const response = await fetch(`${API_BASE}/api/ask`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token ? `Bearer ${token}` : '',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: 'Hello, this is a test message.' }],
+                        sessionId: 'test-session'
+                    })
+                });
+                
+                if (response.ok) {
+                    displayResult('chat-result', {
+                        status: response.status,
+                        success: true,
+                        message: 'AI endpoint is working (streaming response)'
+                    });
+                } else {
+                    const data = await response.json();
+                    displayResult('chat-result', { status: response.status, data }, true);
+                }
+            } catch (error) {
+                displayResult('chat-result', { error: error.message }, true);
+            }
+        }
+
+        async function testRecentActivity() {
+            const token = localStorage.getItem('studyhub_token');
+            if (!token) {
+                displayResult('activity-result', { error: 'Not logged in. Please login first.' }, true);
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE}/api/activity/recent`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                displayResult('activity-result', {
+                    status: response.status,
+                    success: response.ok,
+                    data: data
+                });
+            } catch (error) {
+                displayResult('activity-result', { error: error.message }, true);
+            }
+        }
+
+        // Auto-test server connection on load
+        window.addEventListener('DOMContentLoaded', testServerConnection);
+    </script>
+</body>
+</html>

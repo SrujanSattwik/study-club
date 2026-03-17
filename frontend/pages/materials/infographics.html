@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographics - StudyClub</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/materials-fix.css">
+    <link rel="stylesheet" href="../src/css/dashboard.css">
+    <link rel="stylesheet" href="../src/css/layout.css">
+    <link rel="stylesheet" href="../../assets/css/ui-enhancements.css">
+    <link rel="stylesheet" href="../../assets/css/materials-professional.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body data-category="infographic">
+    <div class="dashboard-layout">
+        <div id="sidebar-container" data-sidebar-path="../components/sidebar.html"></div>
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <a href="login.html" class="btn btn-primary btn-sm login-btn">Login</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="page-header">
+                <div class="container">
+                    <a href="../materials.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Materials</a>
+                    <div class="header-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h1 class="page-title">Infographics</h1>
+                    <p class="page-subtitle">Visual summaries and diagrams to simplify complex concepts</p>
+
+                    <div class="header-actions">
+                        <div class="search-box-header">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search infographics by title, author, or topic...">
+                        </div>
+                        <button class="btn btn-primary upload-btn" onclick="openUploadModal()">
+                            <i class="fas fa-upload"></i> Upload Infographic
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="materials-section">
+                <div class="container">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label><i class="fas fa-filter"></i> Filter by:</label>
+                            <select class="filter-select">
+                                <option>All Subjects</option>
+                                <option>Mathematics</option>
+                                <option>Science</option>
+                                <option>Engineering</option>
+                                <option>Business</option>
+                                <option>Arts</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>All Levels</option>
+                                <option>High School</option>
+                                <option>Undergraduate</option>
+                                <option>Graduate</option>
+                            </select>
+                        </div>
+                        <div class="sort-group">
+                            <label><i class="fas fa-sort"></i> Sort:</label>
+                            <select class="filter-select">
+                                <option>Most Popular</option>
+                                <option>Newest First</option>
+                                <option>A-Z</option>
+                                <option>Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="materials-list" id="materialsList">
+                        <!-- Dynamic infographic items will be loaded here -->
+                    </div>
+
+                    <div class="pagination">
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay"></div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>StudyClub</span>
+                    </div>
+                    <p>Empowering students to achieve their academic goals through innovative learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../about.html">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StudyClub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload"></i> Upload Infographic</h3>
+                <button class="close-modal" onclick="closeUploadModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="upload-mode-toggle"
+                style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center;">
+                <button type="button" class="mode-btn active" onclick="switchUploadMode('file')" id="fileModeBtn">
+                    <i class="fas fa-file-upload"></i> Upload File
+                </button>
+                <button type="button" class="mode-btn" onclick="switchUploadMode('link')" id="linkModeBtn">
+                    <i class="fas fa-link"></i> Upload with Link
+                </button>
+            </div>
+            <form class="upload-form" id="uploadForm">
+                <div class="form-group">
+                    <label>Infographic Title *</label>
+                    <input type="text" name="title" required placeholder="Enter infographic title">
+                </div>
+                <div class="form-group">
+                    <label>Author *</label>
+                    <input type="text" name="author" required placeholder="Enter author name">
+                </div>
+                <div class="form-group">
+                    <label>Subject *</label>
+                    <select name="subject" required>
+                        <option value="">Select subject</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="business">Business</option>
+                        <option value="arts">Arts</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3" placeholder="Brief description of the infographic"></textarea>
+                </div>
+                <div class="form-group" id="fileUploadSection">
+                    <label>Upload Image File *</label>
+                    <div class="file-upload-area">
+                        <input type="file" name="file" id="fileInput" accept="image/*,.pdf" hidden>
+                        <label for="fileInput" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Click to upload image or PDF</span>
+                            <small>JPG, PNG, PDF (Max 20MB)</small>
+                        </label>
+                        <div id="fileName" class="file-name"></div>
+                    </div>
+                </div>
+                <div class="form-group" id="linkUploadSection" style="display: none;">
+                    <label>Infographic Link *</label>
+                    <input type="url" name="link" id="infographicLink"
+                        placeholder="Enter image URL (Google Drive, Imgur, etc.)">
+                    <label style="margin-top: 1rem;">Thumbnail/Preview Image</label>
+                    <div class="file-upload-area">
+                        <input type="file" id="thumbnailInput" accept="image/*" hidden>
+                        <label for="thumbnailInput" class="file-upload-label">
+                            <i class="fas fa-image"></i>
+                            <span>Upload thumbnail/preview image</span>
+                            <small>JPG, PNG (Max 5MB)</small>
+                        </label>
+                        <div id="thumbnailName" class="file-name"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-upload"></i> Request to Upload Infographic
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/api-config.js"></script>
+    <script src="../../assets/js/materials-loader.js"></script>
+    <script src="../../assets/js/auth-manager.js"></script>
+    <script src="../src/js/loadSidebar.js"></script>
+    <script src="../src/js/layout.js"></script>
+    <script>
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+        }
+
+        document.getElementById('uploadModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'uploadModal') closeUploadModal();
+        });
+
+        function switchUploadMode(mode) {
+            const fileSection = document.getElementById('fileUploadSection');
+            const linkSection = document.getElementById('linkUploadSection');
+            const fileModeBtn = document.getElementById('fileModeBtn');
+            const linkModeBtn = document.getElementById('linkModeBtn');
+            const fileInput = document.getElementById('fileInput');
+            const infographicLink = document.getElementById('infographicLink');
+
+            if (mode === 'file') {
+                fileSection.style.display = 'block';
+                linkSection.style.display = 'none';
+                fileModeBtn.classList.add('active');
+                linkModeBtn.classList.remove('active');
+                if (fileInput) fileInput.required = true;
+                if (infographicLink) infographicLink.required = false;
+            } else {
+                fileSection.style.display = 'none';
+                linkSection.style.display = 'block';
+                fileModeBtn.classList.remove('active');
+                linkModeBtn.classList.add('active');
+                if (fileInput) fileInput.required = false;
+                if (infographicLink) infographicLink.required = true;
+            }
+        }
+
+        document.getElementById('fileInput')?.addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) document.getElementById('fileName').textContent = `Selected: ${fileName}`;
+        });
+
+        document.getElementById('thumbnailInput')?.addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) document.getElementById('thumbnailName').textContent = `Selected: ${fileName}`;
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMaterialsPage('infographic');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - StudyClub</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/settings.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>StudyClub</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index-dashboard.html" class="nav-link"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="login.html" class="btn btn-primary btn-sm login-btn">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- MAIN PAGE -->
+<div class="settings-page">
+
+    <!-- HERO HEADER -->
+    <div class="settings-hero">
+        <div class="settings-hero-content">
+            <div class="settings-hero-avatar" id="hero-avatar">U</div>
+            <div class="settings-hero-text">
+                <h1 id="hero-name">Loading...</h1>
+                <p id="hero-email">Loading...</p>
+                <span class="hero-badge" id="hero-role">User</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="settings-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="settings-sidebar">
+            <nav class="settings-nav">
+                <button class="settings-nav-btn active" data-target="profile">
+                    <span class="nav-icon"><i class="fas fa-user"></i></span>
+                    <span class="nav-label">Profile</span>
+                    <i class="fas fa-chevron-right nav-arrow"></i>
+                </button>
+                <button class="settings-nav-btn" data-target="password">
+                    <span class="nav-icon"><i class="fas fa-shield-alt"></i></span>
+                    <span class="nav-label">Change Password</span>
+                    <i class="fas fa-chevron-right nav-arrow"></i>
+                </button>
+                <button class="settings-nav-btn danger-nav" data-target="delete">
+                    <span class="nav-icon"><i class="fas fa-user-times"></i></span>
+                    <span class="nav-label">Delete Account</span>
+                    <i class="fas fa-chevron-right nav-arrow"></i>
+                </button>
+            </nav>
+
+            <div class="sidebar-logout">
+                <button class="btn-sidebar-logout" id="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENT PANELS -->
+        <div class="settings-panels">
+
+            <!-- ── PROFILE PANEL ── -->
+            <section class="settings-panel active" id="panel-profile">
+                <div class="panel-header">
+                    <div class="panel-header-icon"><i class="fas fa-user"></i></div>
+                    <div>
+                        <h2>Profile Information</h2>
+                        <p>Your account details and membership info</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-avatar-large" id="profile-avatar-large">U</div>
+                    <div class="profile-fields">
+                        <div class="profile-field">
+                            <div class="field-icon"><i class="fas fa-user"></i></div>
+                            <div class="field-body">
+                                <span class="field-label">Full Name</span>
+                                <span class="field-value" id="profile-name">—</span>
+                            </div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="field-body">
+                                <span class="field-label">Email Address</span>
+                                <span class="field-value" id="profile-email">—</span>
+                            </div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-icon"><i class="fas fa-id-badge"></i></div>
+                            <div class="field-body">
+                                <span class="field-label">Role</span>
+                                <span class="field-value" id="profile-role">—</span>
+                            </div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="field-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <div class="field-body">
+                                <span class="field-label">Member Since</span>
+                                <span class="field-value" id="profile-created">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── CHANGE PASSWORD PANEL ── -->
+            <section class="settings-panel" id="panel-password">
+                <div class="panel-header">
+                    <div class="panel-header-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <h2>Change Password</h2>
+                        <p>Update your password to keep your account secure</p>
+                    </div>
+                </div>
+
+                <!-- STEP 1: Password Form -->
+                <div class="step-card" id="pwd-step-1">
+                    <div class="step-badge">Step 1 of 2 — Enter Passwords</div>
+                    <form id="change-password-form" class="settings-form" novalidate>
+                        <div class="form-field">
+                            <label for="current-password">Current Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="current-password" placeholder="Your current password" autocomplete="current-password">
+                                <button type="button" class="eye-btn" data-target="current-password"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label for="new-password">New Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password">
+                                <button type="button" class="eye-btn" data-target="new-password"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <div class="password-strength" id="pwd-strength"></div>
+                        </div>
+                        <div class="form-field">
+                            <label for="confirm-new-password">Confirm New Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="confirm-new-password" placeholder="Repeat new password" autocomplete="new-password">
+                                <button type="button" class="eye-btn" data-target="confirm-new-password"><i class="fas fa-eye"></i></button>
+                            </div>
+                            <span class="match-hint" id="pwd-match-hint"></span>
+                        </div>
+                        <button type="button" class="btn-action" id="btn-send-pwd-otp">
+                            <i class="fas fa-paper-plane"></i> Send OTP to Email
+                        </button>
+                    </form>
+                </div>
+
+                <!-- STEP 2: OTP Verification -->
+                <div class="step-card otp-card" id="pwd-step-2" style="display:none;">
+                    <div class="step-badge step-badge-otp">Step 2 of 2 — Verify OTP</div>
+                    <div class="otp-sent-info">
+                        <div class="otp-sent-icon"><i class="fas fa-envelope-open-text"></i></div>
+                        <p>A 6-digit code was sent to <strong id="otp-sent-email">your email</strong></p>
+                    </div>
+                    <div class="otp-inputs" id="pwd-otp-inputs">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    </div>
+                    <div class="otp-timer-row">
+                        <i class="fas fa-clock"></i>
+                        <span>Expires in <strong id="password-otp-timer">5:00</strong></span>
+                    </div>
+                    <div class="otp-btn-row">
+                        <button type="button" class="btn-action" id="btn-verify-pwd-otp">
+                            <i class="fas fa-check-circle"></i> Verify & Update Password
+                        </button>
+                        <button type="button" class="btn-ghost" id="btn-cancel-pwd-otp">Cancel</button>
+                    </div>
+                    <button type="button" class="btn-resend" id="btn-resend-pwd-otp" disabled>
+                        <i class="fas fa-redo"></i> Resend OTP
+                    </button>
+                </div>
+            </section>
+
+            <!-- ── DELETE ACCOUNT PANEL ── -->
+            <section class="settings-panel" id="panel-delete">
+                <div class="panel-header">
+                    <div class="panel-header-icon danger-icon"><i class="fas fa-user-times"></i></div>
+                    <div>
+                        <h2>Delete Account</h2>
+                        <p>Permanently remove your account and all data</p>
+                    </div>
+                </div>
+
+                <!-- Warning Card -->
+                <div class="danger-banner">
+                    <div class="danger-banner-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="danger-banner-body">
+                        <h4>This action is irreversible</h4>
+                        <p>Once deleted, your account <strong>cannot be recovered</strong>. All of the following will be permanently erased:</p>
+                        <ul class="danger-list">
+                            <li><i class="fas fa-times-circle"></i> Personal information &amp; profile</li>
+                            <li><i class="fas fa-times-circle"></i> All uploaded study materials</li>
+                            <li><i class="fas fa-times-circle"></i> Chat history &amp; discussions</li>
+                            <li><i class="fas fa-times-circle"></i> Group memberships &amp; subscriptions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- STEP 1: Initiate -->
+                <div class="step-card danger-step" id="del-step-1">
+                    <div class="step-badge step-badge-danger">Step 1 of 2 — Request Deletion</div>
+                    <p class="delete-confirm-text">To proceed, we'll send a one-time verification code to your registered email address.</p>
+                    <button type="button" class="btn-danger-action" id="btn-send-delete-otp">
+                        <i class="fas fa-trash-alt"></i> Send Deletion OTP
+                    </button>
+                </div>
+
+                <!-- STEP 2: OTP Verification -->
+                <div class="step-card otp-card danger-otp-card" id="del-step-2" style="display:none;">
+                    <div class="step-badge step-badge-danger">Step 2 of 2 — Confirm Deletion</div>
+                    <div class="otp-sent-info danger-otp-info">
+                        <div class="otp-sent-icon danger-otp-icon"><i class="fas fa-envelope-open-text"></i></div>
+                        <p>Enter the code sent to <strong id="del-otp-sent-email">your email</strong> to permanently delete your account.</p>
+                    </div>
+                    <div class="otp-inputs" id="del-otp-inputs">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    </div>
+                    <div class="otp-timer-row danger-timer">
+                        <i class="fas fa-clock"></i>
+                        <span>Expires in <strong id="delete-otp-timer">5:00</strong></span>
+                    </div>
+                    <div class="otp-btn-row">
+                        <button type="button" class="btn-danger-action" id="btn-confirm-delete">
+                            <i class="fas fa-trash-alt"></i> Permanently Delete Account
+                        </button>
+                        <button type="button" class="btn-ghost" id="btn-cancel-delete-otp">Cancel</button>
+                    </div>
+                    <button type="button" class="btn-resend btn-resend-danger" id="btn-resend-delete-otp" disabled>
+                        <i class="fas fa-redo"></i> Resend OTP
+                    </button>
+                </div>
+            </section>
+
+        </div><!-- end panels -->
+    </div><!-- end layout -->
+</div><!-- end settings-page -->
+
+<script src="../assets/js/api-config.js"></script>
+<script src="js/auth-manager.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

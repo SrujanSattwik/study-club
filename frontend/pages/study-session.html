@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Session - Mathematics Masters</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .session-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            height: calc(100vh - 140px);
+        }
+
+        .video-area {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .video-participant {
+            position: relative;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 12px;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-participant.speaking {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .video-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .participant-info {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            z-index: 10;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .participant-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #43e97b;
+        }
+
+        .participant-status.audio-off {
+            color: #f5576c;
+        }
+
+        .participant-status.audio-off .status-dot {
+            background: #f5576c;
+        }
+
+        .call-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            font-size: 1.4rem;
+        }
+
+        .control-btn.primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .control-btn:not(.primary) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-btn:not(.primary):hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .control-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .control-btn.disabled:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .session-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .session-info h4 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .session-info h4 i {
+            color: #667eea;
+        }
+
+        .session-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+            color: #8b8b8b;
+        }
+
+        .session-stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.05rem;
+        }
+
+        .participants-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .participants-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .participants-header i {
+            color: #667eea;
+        }
+
+        .participant-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .participant-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .participant-item:last-child {
+            border-bottom: none;
+        }
+
+        .participant-avatar-small {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid #667eea;
+        }
+
+        .participant-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .participant-item-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .participant-item-role {
+            font-size: 0.8rem;
+            color: #b0b0b0;
+        }
+
+        .participant-item-status {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: white;
+        }
+
+        .status-icon.speaking {
+            background: #43e97b;
+        }
+
+        .status-icon.muted {
+            background: #f5576c;
+        }
+
+        .session-notes {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .session-notes h5 {
+            margin: 0 0 0.75rem 0;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .session-notes h5 i {
+            color: #667eea;
+        }
+
+        .note-item {
+            font-size: 0.85rem;
+            color: #8b8b8b;
+            padding: 0.5rem;
+            border-left: 2px solid #667eea;
+            padding-left: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 1200px) {
+            .session-container {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .session-container {
+                height: auto;
+                gap: 1rem;
+            }
+
+            .side-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .call-controls {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .control-btn.primary {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- Left Sidebar -->
+        <aside class="room-sidebar nav-panel">
+            <div class="nav-header">
+                <div class="room-title-group">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3>Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-room.html" class="tool-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="study-chat.html" class="tool-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item active">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span onclick="location.href='study-room.html'" style="cursor: pointer;">Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Study Session</span>
+                        </div>
+                        <h2>Live Calculus Review Session</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-ghost">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-share-screen"></i> Share Screen
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-video"></i> Full Screen
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <div class="session-container">
+                    <!-- Video Area -->
+                    <div class="video-area">
+                        <div class="video-grid">
+                            <!-- Participant 1 (Speaker) -->
+                            <div class="video-participant speaking">
+                                <div class="video-placeholder">
+                                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="video-avatar" alt="">
+                                    <span>Alex Carter</span>
+                                </div>
+                                <div class="participant-info">
+                                    <span class="participant-name">Alex Carter</span>
+                                    <div class="participant-status">
+                                        <span class="status-dot"></span>
+                                        <span>Speaking</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Participant 2 -->
+                            <div class="video-participant">
+                                <div class="video-placeholder">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="video-avatar" alt="">
+                                    <span>Sarah Lee</span>
+                                </div>
+                                <div class="participant-info">
+                                    <span class="participant-name">Sarah Lee</span>
+                                    <div class="participant-status">
+                                        <span class="status-dot"></span>
+                                        <span>Listening</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Participant 3 -->
+                            <div class="video-participant">
+                                <div class="video-placeholder">
+                                    <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="video-avatar" alt="">
+                                    <span>You</span>
+                                </div>
+                                <div class="participant-info">
+                                    <span class="participant-name">You</span>
+                                    <div class="participant-status">
+                                        <span class="status-dot"></span>
+                                        <span>Listening</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Participant 4 -->
+                            <div class="video-participant">
+                                <div class="video-placeholder">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="video-avatar" alt="">
+                                    <span>John Doe</span>
+                                </div>
+                                <div class="participant-info">
+                                    <span class="participant-name">John Doe</span>
+                                    <div class="participant-status audio-off">
+                                        <span class="status-dot"></span>
+                                        <span>Muted</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Call Controls -->
+                        <div class="call-controls">
+                            <button class="control-btn primary" title="Start/Stop Audio">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="control-btn" title="Camera">
+                                <i class="fas fa-video"></i>
+                            </button>
+                            <button class="control-btn" title="Screen Share">
+                                <i class="fas fa-share-square"></i>
+                            </button>
+                            <button class="control-btn" title="Participants">
+                                <i class="fas fa-users"></i>
+                            </button>
+                            <button class="control-btn" title="Chat">
+                                <i class="fas fa-comment-dots"></i>
+                            </button>
+                            <button class="control-btn" title="Hand Raise">
+                                <i class="fas fa-hand-paper"></i>
+                            </button>
+                            <button class="control-btn" style="background: rgba(245, 87, 108, 0.2); color: #f5576c;" title="Leave Session">
+                                <i class="fas fa-phone-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Side Panel -->
+                    <div class="side-panel">
+                        <!-- Session Info -->
+                        <div class="session-info">
+                            <h4><i class="fas fa-clock"></i> Session Info</h4>
+                            <div class="session-stat">
+                                <span>Duration</span>
+                                <p class="timer" id="sessionTimer">45:32</p>
+                            </div>
+                            <div class="session-stat">
+                                <span>Participants</span>
+                                <span class="stat-value">4/5</span>
+                            </div>
+                            <div class="session-stat">
+                                <span>Topic</span>
+                                <span class="stat-value" style="font-size: 0.85rem;">Calculus Review</span>
+                            </div>
+                            <div class="session-stat">
+                                <span>Started</span>
+                                <span class="stat-value" style="font-size: 0.9rem;">2:15 PM</span>
+                            </div>
+                        </div>
+
+                        <!-- Participants List -->
+                        <div class="participants-list">
+                            <div class="participants-header">
+                                <i class="fas fa-users"></i> Participants (4)
+                            </div>
+                            <div class="participant-item">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="participant-avatar-small" alt="">
+                                <div class="participant-details">
+                                    <div class="participant-item-name">Alex Carter</div>
+                                    <div class="participant-item-role">Admin</div>
+                                </div>
+                                <div class="participant-item-status">
+                                    <div class="status-icon speaking" title="Speaking">
+                                        <i class="fas fa-microphone"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="participant-item">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="participant-avatar-small" alt="">
+                                <div class="participant-details">
+                                    <div class="participant-item-name">Sarah Lee</div>
+                                    <div class="participant-item-role">Moderator</div>
+                                </div>
+                                <div class="participant-item-status">
+                                    <div class="status-icon speaking" title="Speaking" style="background: #667eea;">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="participant-item">
+                                <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="participant-avatar-small" alt="">
+                                <div class="participant-details">
+                                    <div class="participant-item-name">You</div>
+                                    <div class="participant-item-role">Student</div>
+                                </div>
+                                <div class="participant-item-status">
+                                    <div class="status-icon speaking" style="background: #667eea;">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="participant-item">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="participant-avatar-small" alt="">
+                                <div class="participant-details">
+                                    <div class="participant-item-name">John Doe</div>
+                                    <div class="participant-item-role">Student</div>
+                                </div>
+                                <div class="participant-item-status">
+                                    <div class="status-icon muted" title="Muted">
+                                        <i class="fas fa-microphone-slash"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Notes -->
+                        <div class="session-notes">
+                            <h5><i class="fas fa-sticky-note"></i> Notes</h5>
+                            <div class="note-item">• Chain rule applications</div>
+                            <div class="note-item">• Product rule examples</div>
+                            <div class="note-item">• Practice problem solving</div>
+                            <div class="note-item">• Q&A session upcoming</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Members Panel -->
+        <aside class="room-sidebar members-panel" style="display: none;">
+        </aside>
+    </div>
+
+    <script>
+        // Timer update simulation
+        let seconds = 2732; // 45:32 in seconds
+        setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('sessionTimer').textContent = 
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }, 1000);
+
+        // Control button click handlers
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('disabled')) {
+                    this.style.opacity = this.style.opacity === '0.5' ? '1' : '0.5';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

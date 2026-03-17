@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Files - Mathematics Masters</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/study-room-professional.css">
+    <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .files-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .files-search {
+            display: flex;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .files-filters {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+        }
+
+        .file-icon {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .file-icon.pdf {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            color: white;
+        }
+
+        .file-icon.doc {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .file-icon.sheet {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .file-icon.image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .file-info {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.05rem;
+        }
+
+        .file-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+        }
+
+        .file-uploader {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .uploader-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #667eea;
+        }
+
+        .uploader-name {
+            font-size: 0.8rem;
+            color: #8b8b8b;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .file-action-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .file-action-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area {
+            background: white;
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text p {
+            color: #b0b0b0;
+            margin-bottom: 0;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .category-title i {
+            color: #667eea;
+            font-size: 1.25rem;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card-files {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .stat-card-files h4 {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-files .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        @media (max-width: 1200px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .files-header {
+                flex-direction: column;
+            }
+
+            .files-search {
+                flex-direction: column;
+                min-width: 100%;
+            }
+
+            .files-filters {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body class="study-room-modern">
+    <div class="study-room-wrapper">
+        <!-- Left Sidebar -->
+        <aside class="room-sidebar nav-panel">
+            <div class="nav-header">
+                <div class="room-title-group">
+                    <div class="room-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3>Mathematics Masters</h3>
+                        <span class="room-status">Advanced Level</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tool-list">
+                <a href="study-room.html" class="tool-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="study-chat.html" class="tool-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Study Chat</span>
+                    <span class="tool-badge">3</span>
+                </a>
+                <a href="shared-files.html" class="tool-item active">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Shared Files</span>
+                    <span class="tool-badge">12</span>
+                </a>
+                <a href="collab-notes.html" class="tool-item">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Collab Notes</span>
+                    <span class="tool-badge">8</span>
+                </a>
+                <a href="study-tasks.html" class="tool-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Study Tasks</span>
+                    <span class="tool-badge">5</span>
+                </a>
+                <a href="study-session.html" class="tool-item">
+                    <i class="fas fa-video"></i>
+                    <span>Study Session</span>
+                    <span class="tool-badge">2</span>
+                </a>
+            </nav>
+
+            <div class="nav-footer">
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">XP Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2.5h</span>
+                        <span class="stat-label">Study Time</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-workspace-hub">
+            <header class="workspace-header-modern">
+                <div class="header-left">
+                    <button class="action-btn mobile-menu-toggle" id="menuToggle" style="display: none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-info">
+                        <div class="breadcrumb">
+                            <i class="fas fa-home"></i>
+                            <span onclick="location.href='study-room.html'" style="cursor: pointer;">Study Room</span>
+                            <span class="separator">/</span>
+                            <span class="current-section">Shared Files</span>
+                        </div>
+                        <h2>Collaborative File Library</h2>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary btn-sm" onclick="document.getElementById('fileUpload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload
+                    </button>
+                    <input type="file" id="fileUpload" style="display: none;" multiple>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <!-- File Stats -->
+                <div class="stats-bar">
+                    <div class="stat-card-files">
+                        <h4>Total Files</h4>
+                        <div class="value">42</div>
+                    </div>
+                    <div class="stat-card-files">
+                        <h4>Total Size</h4>
+                        <div class="value" style="color: #f093fb;">2.3 GB</div>
+                    </div>
+                    <div class="stat-card-files">
+                        <h4>Downloads</h4>
+                        <div class="value" style="color: #43e97b;">156</div>
+                    </div>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" onclick="document.getElementById('fileUpload').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Drop files here or click to upload</h3>
+                        <p>PDF, DOC, XLS, PPT, Images and more</p>
+                    </div>
+                </div>
+
+                <!-- PDFs Section -->
+                <div class="category-section">
+                    <div class="category-title">
+                        <i class="fas fa-file-pdf"></i> Study Materials & Lecture Notes
+                    </div>
+                    <div class="file-grid">
+                        <div class="file-card">
+                            <div class="file-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Calculus_Chapter_5.pdf</div>
+                                <div class="file-meta">
+                                    <span>2.4 MB</span>
+                                    <span>PDF</span>
+                                </div>
+                                <div class="file-uploader">
+                                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="uploader-avatar" alt="">
+                                    <span class="uploader-name">Alex Carter</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" title="Download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="file-action-btn" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="file-card">
+                            <div class="file-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Integration_Methods.pdf</div>
+                                <div class="file-meta">
+                                    <span>1.8 MB</span>
+                                    <span>PDF</span>
+                                </div>
+                                <div class="file-uploader">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="uploader-avatar" alt="">
+                                    <span class="uploader-name">Sarah Lee</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" title="Download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="file-action-btn" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="file-card">
+                            <div class="file-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Practice_Problems_Set3.pdf</div>
+                                <div class="file-meta">
+                                    <span>3.1 MB</span>
+                                    <span>PDF</span>
+                                </div>
+                                <div class="file-uploader">
+                                    <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="uploader-avatar" alt="">
+                                    <span class="uploader-name">You</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" title="Download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="file-action-btn" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Section -->
+                <div class="category-section">
+                    <div class="category-title">
+                        <i class="fas fa-file-word"></i> Assignments & Documents
+                    </div>
+                    <div class="file-grid">
+                        <div class="file-card">
+                            <div class="file-icon doc">
+                                <i class="fas fa-file-word"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Assignment_Week_4.docx</div>
+                                <div class="file-meta">
+                                    <span>0.8 MB</span>
+                                    <span>DOCX</span>
+                                </div>
+                                <div class="file-uploader">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="uploader-avatar" alt="">
+                                    <span class="uploader-name">John Doe</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" title="Download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="file-action-btn" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="file-card">
+                            <div class="file-icon doc">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">Grade_Tracker.xlsx</div>
+                                <div class="file-meta">
+                                    <span>0.5 MB</span>
+                                    <span>XLSX</span>
+                                </div>
+                                <div class="file-uploader">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="uploader-avatar" alt="">
+                                    <span class="uploader-name">Sarah Lee</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="file-action-btn" title="Download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="file-action-btn" title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Members Panel -->
+        <aside class="room-sidebar members-panel" style="display: none;">
+        </aside>
+    </div>
+
+    <script>
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            console.log('Files selected:', e.target.files);
+        });
+    </script>
+</body>
+
+</html>
