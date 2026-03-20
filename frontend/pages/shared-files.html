@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/study-room-professional.css">
     <link rel="stylesheet" href="../assets/css/ui-enhancements.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .files-header {
@@ -302,6 +304,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/transitions.css">
 </head>
 
 <body class="study-room-modern">
@@ -437,7 +440,8 @@
                                     <span>PDF</span>
                                 </div>
                                 <div class="file-uploader">
-                                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff" class="uploader-avatar" alt="">
+                                    <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
+                                        class="uploader-avatar" alt="">
                                     <span class="uploader-name">Alex Carter</span>
                                 </div>
                                 <div class="file-actions">
@@ -462,7 +466,8 @@
                                     <span>PDF</span>
                                 </div>
                                 <div class="file-uploader">
-                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="uploader-avatar" alt="">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff"
+                                        class="uploader-avatar" alt="">
                                     <span class="uploader-name">Sarah Lee</span>
                                 </div>
                                 <div class="file-actions">
@@ -487,7 +492,8 @@
                                     <span>PDF</span>
                                 </div>
                                 <div class="file-uploader">
-                                    <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff" class="uploader-avatar" alt="">
+                                    <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff"
+                                        class="uploader-avatar" alt="">
                                     <span class="uploader-name">You</span>
                                 </div>
                                 <div class="file-actions">
@@ -520,7 +526,8 @@
                                     <span>DOCX</span>
                                 </div>
                                 <div class="file-uploader">
-                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff" class="uploader-avatar" alt="">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=f59e0b&color=fff"
+                                        class="uploader-avatar" alt="">
                                     <span class="uploader-name">John Doe</span>
                                 </div>
                                 <div class="file-actions">
@@ -545,7 +552,8 @@
                                     <span>XLSX</span>
                                 </div>
                                 <div class="file-uploader">
-                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff" class="uploader-avatar" alt="">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff"
+                                        class="uploader-avatar" alt="">
                                     <span class="uploader-name">Sarah Lee</span>
                                 </div>
                                 <div class="file-actions">
@@ -564,15 +572,112 @@
         </main>
 
         <!-- Members Panel -->
-        <aside class="room-sidebar members-panel" style="display: none;">
+        <!-- 3️⃣ Right Sidebar: Members & Insights -->
+        <aside class="room-sidebar members-panel">
+            <div class="members-header">
+
+                <div class="room-meta-info">
+                    <p
+                        style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">
+                        Category <i class="fas fa-info-circle"></i>
+                    </p>
+                    <span class="gradient-text" style="font-weight: 600;">Advanced Mathematics</span>
+                </div>
+            </div>
+
+            <div class="member-list-section">
+                <div class="member-section-header">
+                    <h6><i class="fas fa-circle" style="color: #23a55a; font-size: 0.6rem;"></i> Online — 3</h6>
+                    <button class="btn btn-ghost btn-xs">View All</button>
+                </div>
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Carter&background=6366f1&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Alex Carter</span>
+                        <span class="member-role">Admin</span>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Sarah+Lee&background=ec4899&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Sarah Lee</span>
+                        <span class="member-role">Moderator</span>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=You&background=10b981&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-online"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">You</span>
+                        <span class="member-role">Student</span>
+                    </div>
+                </div>
+
+                <div class="member-section-header" style="margin-top: 1.5rem;">
+                    <h6><i class="fas fa-circle" style="color: #80848e; font-size: 0.6rem;"></i> Offline — 12</h6>
+                </div>
+
+                <div class="member-card offline">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=9ca3af&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-offline"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">John Doe</span>
+                    </div>
+                </div>
+
+                <div class="member-card offline">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Emma+Wilson&background=f59e0b&color=fff"
+                            class="member-avatar">
+                        <span class="status-indicator status-offline"></span>
+                    </div>
+                    <div class="member-info">
+                        <span class="member-name">Emma Wilson</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-stats">
+                <h6>Room Stats</h6>
+                <div class="stat-row">
+                    <span>Total Members</span>
+                    <strong>15</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Created</span>
+                    <strong>3 weeks ago</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Total Messages</span>
+                    <strong>482</strong>
+                </div>
+            </div>
         </aside>
     </div>
 
     <script>
-        document.getElementById('fileUpload').addEventListener('change', function(e) {
+        document.getElementById('fileUpload').addEventListener('change', function (e) {
             console.log('Files selected:', e.target.files);
         });
     </script>
+    <script src="../assets/js/page-transitions.js"></script>
 </body>
 
 </html>

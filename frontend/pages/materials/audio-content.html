@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../src/css/layout.css">
     <link rel="stylesheet" href="../../assets/css/ui-enhancements.css">
     <link rel="stylesheet" href="../../assets/css/materials-professional.css">
+    <link rel="stylesheet" href="../../assets/css/transitions.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -35,7 +36,8 @@
         <main class="main-content">
             <section class="page-header">
                 <div class="container">
-                    <a href="../materials.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Materials</a>
+                    <a href="../materials.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to
+                        Materials</a>
                     <div class="header-icon">
                         <i class="fas fa-headphones"></i>
                     </div>
@@ -45,7 +47,8 @@
                     <div class="header-actions">
                         <div class="search-box-header">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="searchInput" placeholder="Search audio by title, author, or topic...">
+                            <input type="text" id="searchInput"
+                                placeholder="Search audio by title, author, or topic...">
                         </div>
                         <button class="btn btn-primary upload-btn" onclick="openUploadModal()">
                             <i class="fas fa-upload"></i> Upload Audio
@@ -272,6 +275,7 @@
             initMaterialsPage('audio');
         });
     </script>
+    <script src="../../assets/js/page-transitions.js"></script>
 </body>
 
 </html>

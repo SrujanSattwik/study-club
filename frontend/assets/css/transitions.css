@@ -1,0 +1,26 @@
+/* Base styles for the page body to enable smooth transitions */
+body {
+    opacity: 1;
+    transform: translateY(0);
+    /* Ultra-smooth cubic-bezier curve for premium feel */
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, transform;
+}
+
+/* State when the page is exiting or entering */
+body.page-transitioning {
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none; /* Prevent clicks during transition */
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    body {
+        transition: opacity 0.3s ease !important;
+        transform: none !important;
+    }
+    body.page-transitioning {
+        transform: none !important;
+    }
+}
