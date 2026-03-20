@@ -194,7 +194,7 @@ function createMaterialCard(material) {
                     ${tagsHTML}
                 </div>
                 <div class="material-meta">
-                    <span><i class="fas fa-download"></i> <strong>${formattedDownloads}</strong></span>
+                    <span id="download-count-${id}"><i class="fas fa-download"></i> <strong>${formattedDownloads}</strong></span>
                     <span><i class="fas fa-file"></i> ${(format || 'link').toUpperCase()}</span>
                     <span><i class="fas fa-calendar-alt"></i> ${date}</span>
                 </div>
@@ -233,7 +233,9 @@ async function handleMaterialAction(materialId, resourceUrl, type) {
             const data = await response.json();
             const countElement = document.getElementById(`download-count-${materialId}`);
             if (countElement) {
-                countElement.innerHTML = `<i class="fas fa-download"></i> ${data.downloadCount}`;
+                // Format the download count (1000+ shows as "1.0k", etc.)
+                const formattedCount = data.downloadCount >= 1000 ? `${(data.downloadCount / 1000).toFixed(1)}k` : data.downloadCount;
+                countElement.innerHTML = `<i class="fas fa-download"></i> <strong>${formattedCount}</strong>`;
             }
         }
         

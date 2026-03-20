@@ -2,7 +2,7 @@ async function getDashboard(req, res, getConnection) {
   try {
     const userId = req.userId;
     const conn = await getConnection();
-    
+
     try {
       // Get dashboard stats
       const statsResult = await conn.execute(
@@ -20,11 +20,12 @@ async function getDashboard(req, res, getConnection) {
 
       // Get recent activity (last 5)
       const activityResult = await conn.execute(
-        `SELECT activity_id, material_id, activity_type, progress, activity_timestamp
-         FROM user_material_activity
-         WHERE user_id = :userId
-         ORDER BY activity_timestamp DESC
-         FETCH FIRST 5 ROWS ONLY`,
+        `SELECT * FROM (
+           SELECT activity_id, material_id, activity_type, progress, accessed_at
+           FROM user_material_activity
+           WHERE user_id = :userId
+           ORDER BY accessed_at DESC
+         ) WHERE ROWNUM <= 5`,
         { userId }
       );
 
@@ -33,7 +34,7 @@ async function getDashboard(req, res, getConnection) {
         materialId: row.MATERIAL_ID,
         activityType: row.ACTIVITY_TYPE,
         progress: row.PROGRESS,
-        timestamp: row.ACTIVITY_TIMESTAMP
+        timestamp: row.ACCESSED_AT
       }));
 
       res.json({
